@@ -1,30 +1,39 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
-Author: Robert Samoraj
+Author : yar <yar@localhost>
+Date   : 2022-11-01
 Purpose: Say hello
 """
 
 import argparse
 
 
+# --------------------------------------------------
 def get_args():
-    """ Get the command-lind arguments """
+    """Get command-line arguments"""
 
-    parser = argparse.ArgumentParser(description='Say hello')
+    parser = argparse.ArgumentParser(
+        description='Say hello',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
     parser.add_argument('-n',
                         '--name',
+                        help='Name to greet',
                         metavar='name',
-                        default='World',
-                        help='Name to greet')
+                        type=str,
+                        default='World')
+
     return parser.parse_args()
 
 
+# --------------------------------------------------
 def main():
-    """ main """
+    """Make a jazz noise here"""
+
     args = get_args()
-    name = args.name
-    print('Hello, ' + name + '!')
+    print('Hello, ' + args.name + '!')
 
 
+# --------------------------------------------------
 if __name__ == '__main__':
     main()
