@@ -31,7 +31,7 @@ def main():
     word = args.word
     article = 'an'if word[0].lower() in 'aeiou' else 'a'
 
-    print('Ahoy, Captain, {} {} off the larboard bow!'.format(article, word))
+    print(f'Ahoy, Captain, {article} {word} off the larboard bow!')
     
 
 # --------------------------------------------------
