@@ -2,7 +2,7 @@
 """
 Author : Rob Samoraj <snailfail@vivaldi.net>
 Date   : 2022-11-07
-Purpose: Output list
+Purpose: Output formatted list
 """
 
 import argparse
@@ -32,7 +32,7 @@ def get_args():
 
 # --------------------------------------------------
 def main():
-    """Make a jazz noise here"""
+    """Output formatted list of items to bring to picnic"""
 
     args = get_args()
     print(args.items)
