@@ -37,15 +37,25 @@ def main():
 
     args = get_args()
     items = args.items
-    # print(args.items)
-    # print(args.sorted)
+    num_items = len(items)
 
-    if len(items) == 1:
-        print(f'You are bringing {items[0]}.')
-    elif len(items) == 2:
-        print(f'You are bringing {items[0]} and {items[1]}.')
+    if args.sorted:
+        # items = sorted(items)
+        items.sort()
+
+
+    bringing = ''
+    if num_items == 1:
+        bringing = items[0]
+    elif num_items == 2:
+        # bringing = f'{items[0]} and {items[1]}'
+        bringing = ' and '.join(items)
     else:
-        print('You are bringing ' + ', '.join(items[:-1]) + ', and ' + items[-1] + '.')
+        # items[-1] = 'and ' + items[-1]
+        # bringing = ', '.join(items)
+        bringing = ', '.join(items[:-1]) + ', and ' + items[-1]
+
+    print(f'You are bringing {bringing}.')
 
 # --------------------------------------------------
 if __name__ == '__main__':
