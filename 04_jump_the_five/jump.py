@@ -26,7 +26,6 @@ def main():
     """Encode text using Jump the Five"""
 
     args = get_args()
-    text = args.text
     jumper = {
         '1': '9',
         '2': '8',
@@ -40,12 +39,8 @@ def main():
         '0': '5'
     }
 
-    for char in text:
-        if char in jumper:
-            print(jumper.get(char), end='')
-        else:
-            print(char, end='')
-
+    for char in args.text:
+        print(jumper.get(char, char), end='')
     print()
 
 
