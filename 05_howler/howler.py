@@ -2,10 +2,12 @@
 """
 Author : Rob Samoraj <snailfail@vivaldi.net>
 Date   : 2022-11-13
-Purpose: Uppercase the given text
+Purpose: Howler exercise
 """
 
 import argparse
+import os
+import sys
 
 
 # --------------------------------------------------
@@ -16,37 +18,23 @@ def get_args():
         description='Uppercase the given text',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('positional',
+    parser.add_argument('text',
                         metavar='str',
-                        help='A positional argument')
+                        help='Input text')
 
-    parser.add_argument('-a',
-                        '--arg',
-                        help='A named string argument',
+    parser.add_argument('-o',
+                        '--out',
+                        help='Output filename',
                         metavar='str',
                         type=str,
                         default='')
 
-    parser.add_argument('-i',
-                        '--int',
-                        help='A named integer argument',
-                        metavar='int',
-                        type=int,
-                        default=0)
+    args = parser.parse_args()
 
-    parser.add_argument('-f',
-                        '--file',
-                        help='A readable file',
-                        metavar='FILE',
-                        type=argparse.FileType('rt'),
-                        default=None)
+    if os.path.isfile(args.text):
+        args.text = open(args.text).read().rstrip()
 
-    parser.add_argument('-o',
-                        '--on',
-                        help='A boolean flag',
-                        action='store_true')
-
-    return parser.parse_args()
+    return args
 
 
 # --------------------------------------------------
@@ -54,18 +42,11 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
-
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ''))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
-
+    
+    if args.out:
+        print(args.text.upper(), file=open(args.out, 'wt'))
+    else:
+        print(args.text.upper())
 
 # --------------------------------------------------
 if __name__ == '__main__':
