@@ -8,6 +8,7 @@ Purpose: Howler exercise
 import argparse
 import os
 import sys
+import io
 
 
 # --------------------------------------------------
@@ -30,7 +31,9 @@ def get_args():
     args = parser.parse_args()
 
     if os.path.isfile(args.text):
-        args.text = open(args.text).read().rstrip()
+        args.text = open(args.text)
+    else:
+        args.text = io.StringIO(args.text + '\n')
 
     return args
 
@@ -40,15 +43,14 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-
-    # out_fh = None
-    # if args.outfile:
-    #     out_fh = open(args.outfile, 'wt')
-    # else:
-    #     out_fh = sys.stdout
-
     out_fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
-    print(args.text.upper(), file=out_fh)
+
+    for line in args.text:
+        out_fh.write(line.upper())
+    
+    out_fh.close()
+
+
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
