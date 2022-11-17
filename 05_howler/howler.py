@@ -41,12 +41,13 @@ def main():
 
     args = get_args()
 
-    out_fh = None
-    if args.outfile:
-        out_fh = open(args.outfile, 'wt')
-    else:
-        out_fh = sys.stdout
+    # out_fh = None
+    # if args.outfile:
+    #     out_fh = open(args.outfile, 'wt')
+    # else:
+    #     out_fh = sys.stdout
 
+    out_fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
     print(args.text.upper(), file=out_fh)
 # --------------------------------------------------
 if __name__ == '__main__':
