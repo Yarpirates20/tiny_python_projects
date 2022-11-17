@@ -7,7 +7,6 @@ Purpose: Howler exercise
 
 import argparse
 import os
-import sys
 
 
 # --------------------------------------------------
@@ -18,12 +17,10 @@ def get_args():
         description='Uppercase the given text',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('text',
-                        metavar='str',
-                        help='Input text')
+    parser.add_argument('text', metavar='str', help='Input text')
 
     parser.add_argument('-o',
-                        '--out',
+                        '--outfile',
                         help='Output filename',
                         metavar='str',
                         type=str,
@@ -42,11 +39,11 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    
-    if args.out:
-        print(args.text.upper(), file=open(args.out, 'wt'))
+    if args.outfile:
+        print(args.text.upper(), file=open(args.outfile, 'wt'))
     else:
         print(args.text.upper())
+
 
 # --------------------------------------------------
 if __name__ == '__main__':
