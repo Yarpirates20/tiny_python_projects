@@ -21,7 +21,7 @@ def get_args():
                         metavar='FILE',
                         nargs='*',
                         type=argparse.FileType('r'),
-                        default=sys.stdin)
+                        default=[sys.stdin])
 
     return parser.parse_args()
 
@@ -31,18 +31,23 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
 
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ''))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
+    total_lines, total_words, total_bytes = 0, 0, 0
 
+    for fh in args.file:
+        num_lines, num_words, num_bytes = 0, 0, 0
+        for line in fh:
+            num_lines += 1
+            num_words += len(line.split())
+            num_bytes += len(line)
+            
+        print(f'{num_lines:8}{num_words:8}{num_bytes:8} {fh.name}')
+        total_lines += num_lines
+        total_words += num_words
+        total_bytes += num_bytes
+    
+    if len(args.file) > 1:
+        print(f'{total_lines:8}{total_words:8}{total_bytes:8} total')
 
 # --------------------------------------------------
 if __name__ == '__main__':
