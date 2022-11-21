@@ -6,6 +6,7 @@ Purpose: Prints line from a file starting with given letter
 """
 
 import argparse
+from pprint import pprint
 
 
 # --------------------------------------------------
@@ -16,10 +17,7 @@ def get_args():
         description='Prints line from a file starting with given letter',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('letters',
-                        metavar='letter',
-                        nargs='+',
-                        help='Letters')
+    parser.add_argument('letters', metavar='letter', nargs='+', help='Letters')
 
     parser.add_argument('-f',
                         '--file',
@@ -37,12 +35,8 @@ def main():
 
     args = get_args()
 
-    lookup = {}
-    for line in args.file:
-        key = line[0].upper()   
-        value = line[:-1]
-        lookup[key] = value
-    
+    lookup = {line[0].upper(): line.rstrip() for line in args.file}
+
     for letter in args.letters:
         print(lookup.get(letter.upper(), f'I do not know "{letter}".'))
 
