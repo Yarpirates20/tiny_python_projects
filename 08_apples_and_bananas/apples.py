@@ -6,7 +6,9 @@ Purpose: Replace all the vowels in text with the given vowel
 """
 
 import argparse
-import re
+import sys
+import os
+
 
 
 # --------------------------------------------------
@@ -29,14 +31,20 @@ def get_args():
                         type=str,
                         default='a')
 
-    parser.add_argument('-f',
-                        '--file',
-                        help='A readable file',
-                        metavar='FILE',
-                        type=argparse.FileType('r'),
-                        default=None)
+    # parser.add_argument('-f',
+    #                     '--file',
+    #                     nargs='?',
+    #                     help='A readable file',
+    #                     metavar='FILE',
+    #                     type=argparse.FileType('r'),
+    #                     default=sys.stdin)
 
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    if os.path.isfile(args.text):
+        args.text = open(args.text).read().rstrip()
+
+    return args
 
 
 # --------------------------------------------------
@@ -48,6 +56,8 @@ def main():
     text = args.text
     vowel = args.vowel
     replaced = ''
+
+    # If file argument is present in argparse, run the code for the text in that file and output it to the command line.
 
     for char in text:
         if char in 'aeiouAEIOU':
