@@ -68,18 +68,10 @@ def main():
     random.seed(args.seed)
 
     for _ in range(args.number):
-        random_adjective = random.sample(adjectives, args.adjectives)
-        random_noun = random.choice(nouns)
-        
-        formatted = ''
-        if args.adjectives == 1:
-            formatted = random_adjective[0]
-        elif args.adjectives == 2:
-            formatted = ', '.join(random_adjective)
-        else:
-            formatted = ', '.join(random_adjective[:-1]) + ', ' + random_adjective[-1]
+        random_adjective = ', '.join(random.sample(adjectives, args.adjectives))
 
-        print(f'You {formatted} {random_noun}!')
+        print((f'You {random_adjective} {random.choice(nouns)}!'))
+
 
 
 # --------------------------------------------------
