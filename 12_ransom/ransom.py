@@ -43,12 +43,16 @@ def main():
 
     args = get_args()
     random.seed(args.seed)
-    new_text = ''
+    # new_text = ''
 
-    for char in args.text:
-        new_text += choose(char)
+    # for char in args.text:
+    #     new_text += choose(char)
+
     
-    print(new_text)
+    # print(''.join([choose(char) for char in args.text]))
+
+
+    print(''.join(map(choose, args.text)))
 
 
 # --------------------------------------------------
