@@ -37,14 +37,38 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    print(verse(args.num))
+
+    # for v in range(args.num, 0, -1):
+    #     print(f'{verse(args.num)}\n'
+    #           if v > 1 else f'{verse(args.num)}')
+    #     args.num -= 1
+
+    print('\n\n'.join(map(verse, range(args.num, 0, -1))))
 
 
 # --------------------------------------------------
 def verse(bottle):
     """Sing a verse"""
 
-    return str(bottle)
+    next_bottle = bottle - 1
+    s1 = '' if bottle == 1 else 's'
+    s2 = '' if next_bottle == 1 else 's'
+    next_num = 'No more' if next_bottle == 0 else next_bottle
+
+    return '\n'.join([
+        f'{bottle} bottle{s1} of beer on the wall,',
+        f'{bottle} bottle{s1} of beer,', f'Take one down, pass it around,',
+        f'{next_num} bottle{s2} of beer on the wall!'
+    ])
+
+    # noun = 'bottles' if bottle != 1 else 'bottle'
+    # amount_of_bottles = 'No more' if bottle == 0 else bottle - 1
+
+    # return '\n'.join([
+    #     f'{bottle} {noun} of beer on the wall,',
+    #     f'{bottle} {noun} of beer,',
+    #     f'Take one down, pass it around,',
+    #     f'{amount_of_bottles} {noun} of beer on the wall!'])
 
 
 # --------------------------------------------------
@@ -58,7 +82,6 @@ def test_verse():
         "Take one down, pass it around,",
         "No more bottles of beer on the wall!",
     ])
-
 
     two_bottles = verse(2)
     assert two_bottles == "\n".join([
