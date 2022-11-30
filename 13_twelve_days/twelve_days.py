@@ -6,6 +6,9 @@ Purpose: Twelve Days of Christmas
 """
 
 import argparse
+import io
+import os
+import sys
 
 
 # --------------------------------------------------
@@ -21,7 +24,7 @@ def get_args():
                         help='Output filename',
                         metavar='file',
                         type=str,
-                        default='')
+                        default=None)
 
     parser.add_argument('-n',
                         '--num',
@@ -43,10 +46,14 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+    out_fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
+
     for n in range(1, args.num + 1):
-        print(verse(n) if n == args.num else verse(n) + '\n')
+        out_fh.write(verse(n) + '\n' if n == args.num else verse(n) + '\n\n')
         # print(verse(n))
         # print()
+
+    out_fh.close()
 
 
 # --------------------------------------------------
@@ -65,7 +72,7 @@ def verse(day):
         9: 'ninth',
         10: 'tenth',
         11: 'eleventh',
-        12: 'twelveth',
+        12: 'twelfth',
     }
 
     gifts = {
@@ -83,10 +90,14 @@ def verse(day):
         12: 'Twelve drummers drumming,'
     }
 
-    lines = [f'On the {ordinal[day]} day of Christmas,', 'My true love gave to me,',]
+    lines = [
+        f'On the {ordinal[day]} day of Christmas,',
+        'My true love gave to me,',
+    ]
 
     for i in range(day, 0, -1):
-        lines.append(gifts[i]) if day > 1 else  lines.append(gifts[i][4:].capitalize())
+        lines.append(gifts[i]) if day > 1 else lines.append(
+            gifts[i][4:].capitalize())
 
     # lines.append('\n')
     return '\n'.join(lines)
