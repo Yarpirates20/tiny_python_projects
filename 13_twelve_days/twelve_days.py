@@ -6,8 +6,6 @@ Purpose: Twelve Days of Christmas
 """
 
 import argparse
-import io
-import os
 import sys
 
 
@@ -55,10 +53,15 @@ def main():
 
     # out_fh.close()
 
-    verses = [
-        verse(day)
-        for day in range(1, args.num + 1)
-    ]
+    # verses = [
+    #     verse(day)
+    #     for day in range(1, args.num + 1)
+    # ]
+
+    ###
+    # Map takes function as first argument, and the second argument is something that produces a sequence, such as range function, which will produce numbers 1 - 12, each will be given as argument to verse and the output will go into verses.
+    verses = map(verse, range(1, args.num + 1))
+    
 
     print('\n\n'.join(verses), file=args.outfile)
 
