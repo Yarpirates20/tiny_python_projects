@@ -23,8 +23,8 @@ def get_args():
                         '--outfile',
                         help='Output filename',
                         metavar='file',
-                        type=str,
-                        default=None)
+                        type=argparse.FileType('wt'),
+                        default=sys.stdout)
 
     parser.add_argument('-n',
                         '--num',
@@ -46,14 +46,21 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    out_fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
+    # out_fh = open(args.outfile, 'wt') if args.outfile else sys.stdout
 
-    for n in range(1, args.num + 1):
-        out_fh.write(verse(n) + '\n' if n == args.num else verse(n) + '\n\n')
+    # for n in range(1, args.num + 1):
+        # out_fh.write(verse(n) + '\n' if n == args.num else verse(n) + '\n\n')
         # print(verse(n))
         # print()
 
-    out_fh.close()
+    # out_fh.close()
+
+    verses = [
+        verse(day)
+        for day in range(1, args.num + 1)
+    ]
+
+    print('\n\n'.join(verses), file=args.outfile)
 
 
 # --------------------------------------------------
