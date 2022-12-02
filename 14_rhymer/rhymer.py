@@ -31,16 +31,28 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    word = args.word
-    consonants = [c for c in string.ascii_lowercase if c not in 'aeiou']
-    clusters = ['bl', 'br', 'ch', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'pl', 'pr', 'sc', 'sh', 'sk', 'sl', 'sm', 'sn', 'sp', 'st', 'sw', 'th', 'tr', 'tw', 'thw', 'wh', 'wr', 'sch', 'scr', 'shr', 'sph', 'spl', 'spr', 'squ', 'str', 'thr']
-    letters = consonants + clusters
-    rhymes = []
-    s1, s2 = stemmer(word.lower())
+    # word = args.word
+    # consonants = [c for c in string.ascii_lowercase if c not in 'aeiou']
+    # clusters = ['bl', 'br', 'ch', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'pl', 'pr', 'sc', 'sh', 'sk', 'sl', 'sm', 'sn', 'sp', 'st', 'sw', 'th', 'tr', 'tw', 'thw', 'wh', 'wr', 'sch', 'scr', 'shr', 'sph', 'spl', 'spr', 'squ', 'str', 'thr']
+
+    prefixes = list('bcdfghjklmnpqrstvwxyz') + ('bl br ch cl cr dr fl fr gl gr pl pr sc sh sk sl sm sn sp st sw th tr tw thw wh wr sch scr shr sph spl spr squ str thr').split()
+
+    start, rest = stemmer(args.word)
+
+    if rest:
+        words = '\n'.join(sorted([p + rest for p in prefixes if p != start]))
+        print(words)
+    else:
+        print(f'Cannot rhyme "{args.word}"')
+
+    # letters = consonants + clusters
+    # rhymes = []
+    # s1, s2 = stemmer(word.lower())
     
-    rhymes = (i+s2 for i in letters if i != s1)
+
+    # rhymes = (i+s2 for i in letters if i != s1)
    
-    print('\n'.join(sorted(rhymes)))  if 'aeiou' in s1 or s2 else print(f'Cannot rhyme "{args.word}"')
+    # print('\n'.join(sorted(rhymes)))  if 'aeiou' in s1 or s2 else print(f'Cannot rhyme "{args.word}"')
     # print(f'{clusters[0]}{s2}')
 
 
