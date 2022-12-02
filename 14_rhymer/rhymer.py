@@ -31,7 +31,17 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    print(stemmer(args.word))
+    word = args.word
+    consonants = [c for c in string.ascii_lowercase if c not in 'aeiou']
+    clusters = ['bl', 'br', 'ch', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'pl', 'pr', 'sc', 'sh', 'sk', 'sl', 'sm', 'sn', 'sp', 'st', 'sw', 'th', 'tr', 'tw', 'thw', 'wh', 'wr', 'sch', 'scr', 'shr', 'sph', 'spl', 'spr', 'squ', 'str', 'thr']
+    letters = consonants + clusters
+    rhymes = []
+    s1, s2 = stemmer(word.lower())
+    
+    rhymes = (i+s2 for i in letters if i != s1)
+   
+    print('\n'.join(sorted(rhymes)))  if 'aeiou' in s1 or s2 else print(f'Cannot rhyme "{args.word}"')
+    # print(f'{clusters[0]}{s2}')
 
 
 # --------------------------------------------------
