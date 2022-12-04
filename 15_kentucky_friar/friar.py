@@ -38,15 +38,30 @@ def main():
     args = get_args()
     
     for line in args.text.splitlines():
-        print(line.split())
+        words = []
+        for word in re.split(r'(\W+)', line.rstrip()):
+            words.append(fry(word)) 
+        print(''.join(words))
 
 
 # --------------------------------------------------
 def fry(word):
-    if word == 'you':
-        return "y'all"
-    elif word == 'You':
-        return "Y'all"
+    """ Drop the 'g' from a word ending in 'ing' and replace it with an apostrophe. Replace 'you' with 'y'all' """
+
+    you_match = re.match('([yY])ou$', word)
+    ing_match = re.search('(.+)ing$', word)
+
+    if you_match:
+        return you_match.group(1) + "'all"
+
+    if ing_match:
+        # return word[:-1] + "'"
+        first = ing_match.group(1)
+        if re.search('[aeiouy]', first, re.IGNORECASE):
+            return first + "in'"
+
+    return word
+
 
 # --------------------------------------------------
 def test_fry():
@@ -56,6 +71,7 @@ def test_fry():
     assert fry('fishing') == "fishin'"
     assert fry('Aching') == "Achin'"
     assert fry('swing') == "swing"
+    assert fry('your') == 'your'
 
 
 
