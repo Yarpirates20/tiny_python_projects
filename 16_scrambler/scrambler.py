@@ -8,6 +8,7 @@ Purpose: Scramble words
 import argparse
 import os
 import random
+import re
 
 
 # --------------------------------------------------
@@ -25,7 +26,7 @@ def get_args():
     parser.add_argument('-s',
                         '--seed',
                         help='Random seed',
-                        metavar='int',
+                        metavar='seed',
                         type=int,
                         default=None)
 
@@ -42,16 +43,26 @@ def main():
 
     args = get_args()
     random.seed(args.seed)
+    splitter = re.compile(r"([a-zA-Z](?:[a-zA-Z']*[a-zA-Z])?)")
 
     for line in args.text.splitlines():
-        print(line)
-
+        words = [scramble(word) for word in splitter.split(line)]
+        print(''.join(words))
 
 # --------------------------------------------------
 def scramble(word):
     """Scramble a word"""
 
-    pass
+    if len(word) >= 3 and re.match(r'\w+', word):
+        middle = list(word[1:-1])
+        random.shuffle(middle)
+        word = word[0] + ''.join(middle) + word[-1]
+
+    return word
+
+    # middle = list(word[1:-1])
+    # random.shuffle(middle)
+    # return f"{word[0]}{''.join(middle)}{word[-1]}" if len(word) > 3 else word
 
 
 # --------------------------------------------------
@@ -62,11 +73,11 @@ def test_scramble():
     assert scramble('a') == 'a'
     assert scramble('ab') == 'ab'
     assert scramble('abc') == 'abc'
-    assert scramble('abcd') == 'abcd'
-    assert scramble('abcde') == 'abcde'
-    assert scramble('abcdef') == 'abcdef'
+    assert scramble('abcd') == 'acbd'
+    assert scramble('abcde') == 'acbde'
+    assert scramble('abcdef') == 'aecbdf'
     assert scramble("abcde'f") == "abcd'ef"
-    random.setstate()
+    random.setstate(state)
     
 
 # --------------------------------------------------
