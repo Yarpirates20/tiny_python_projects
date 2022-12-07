@@ -46,8 +46,8 @@ def main():
     splitter = re.compile(r"([a-zA-Z](?:[a-zA-Z']*[a-zA-Z])?)")
 
     for line in args.text.splitlines():
-        words = [scramble(word) for word in splitter.split(line)]
-        print(''.join(words))
+        print(''.join([scramble(word) for word in splitter.split(line)]))
+        
 
 # --------------------------------------------------
 def scramble(word):
