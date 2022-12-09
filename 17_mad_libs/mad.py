@@ -6,7 +6,9 @@ Purpose: Mad Libs
 """
 
 import argparse
+import os
 import re
+import sys
 
 
 # --------------------------------------------------
@@ -37,12 +39,25 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+    inputs = args.inputs
     text = args.file.read().rstrip()
-    placeholders = re.findall('(<([^<>]+?)>)', text)
+    # print('inputs =', args.inputs)
+    blanks = re.findall('(<([^<>]+?)>)', text)
 
     # if len(placeholders) == 0:
-    if not placeholders:
-        print('This text has no placeholders.')
+    if not blanks:
+        # print(f'"{args.file.name}" has no placeholders.', file=sys.stderr)
+        # sys.exit(1)
+        sys.exit(f'"{args.file.name}" has no placeholders.')
+
+
+    for placeholder, name in blanks:
+        article = 'an' if name[0].lower() in 'aeiou' else 'a'
+        answer = inputs.pop(0) if inputs else input(f'Give me {article} {name}: ')
+        text = re.sub(placeholder, answer, text, count=1)
+
+    print(text)
+        
 
 
 # --------------------------------------------------
