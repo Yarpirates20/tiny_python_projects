@@ -55,6 +55,7 @@ def test_word2num():
     assert word2num('abc') == '294'  # 97 + 98 + 99
     assert word2num('ab\'c') == '294'
     assert word2num("4a-b'c,") == '346'
+    assert word2num('hello') == '532'
 
 
 # --------------------------------------------------
