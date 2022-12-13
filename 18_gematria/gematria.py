@@ -34,7 +34,8 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    print(args.text)
+    for line in args.text.splitlines():
+        print(' '.join(map(word2num, line.split())))
 
 
 # --------------------------------------------------
