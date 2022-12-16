@@ -6,7 +6,7 @@ Purpose: Encode words as numbers
 """
 
 import argparse
-from functools import reduce
+# from functools import reduce
 import os
 import re
 
@@ -36,17 +36,27 @@ def main():
     args = get_args()
     for line in args.text.splitlines():
         print(' '.join(map(word2num, line.split())))
+        
+        # print(' '.join(map(word2num, line.split())))
 
 
 # --------------------------------------------------
 def word2num(word):
     """Convert word to number using ASCII values"""
 
-    cleaned_word = re.sub('[^A-Za-z0-9]', '', word)
+    # Anything that is NOT in the character class is substituted with an empty string.
+    # cleaned_word = re.sub('[^A-Za-z0-9]', '', word)
 
     # vals = [ord(char) for char in cleaned_word]
 
-    return str(sum(map(ord, cleaned_word)))
+    # return str(sum(map(ord, cleaned_word)))
+
+    # Combined in map function:
+    return str(sum(map(ord, re.sub('[^A-Za-z0-9]', '', word))))
+
+
+    # Alternate one-line solution as list comprehension:
+    # return str(sum([ord(char) for char in re.sub('[^A-Za-z0-9]', '', word)]))
     
 
 # --------------------------------------------------
