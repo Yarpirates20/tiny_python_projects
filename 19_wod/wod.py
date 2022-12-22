@@ -51,7 +51,7 @@ def get_args():
 
     if args.num < 1:
         parser.error(f'--num "{args.num}" must be greater than 0')
-
+        
     return args
 
 # --------------------------------------------------
