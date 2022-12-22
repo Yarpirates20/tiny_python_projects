@@ -6,7 +6,11 @@ Purpose: Create Workout of (the) Day (WOD)
 """
 
 import argparse
+import csv
 import io
+from pprint import pprint
+import random
+import re
 
 
 # --------------------------------------------------
@@ -43,22 +47,35 @@ def get_args():
                         help='Halve the reps',
                         action='store_true')
 
-    return parser.parse_args()
+    args = parser.parse_args()
 
+    if args.num < 1:
+        parser.error(f'--num "{args.num}" must be greater than 0')
+
+    return args
 
 # --------------------------------------------------
 def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    print(args.file.name)
-
+    random.seed(args.seed)
+    exercises = read_csv(args.file)
+    pprint(random.sample(exercises, k=args.num))
 
 # --------------------------------------------------
 def read_csv(fh):
     """Read the CSV input"""
 
-    pass
+    reader = csv.DictReader(fh, delimiter=',')
+    exercises = []
+    for rec in reader:
+        name, reps = rec['name'], rec['reps']
+        match = re.match(r'(\d+)-(\d+)', reps)
+        low, high = int(match.group(1)), int(match.group(2))
+        exercises.append((name, low, high))
+    
+    return exercises
 
 
 # --------------------------------------------------
