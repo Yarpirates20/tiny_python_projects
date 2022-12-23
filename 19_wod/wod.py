@@ -8,7 +8,6 @@ Purpose: Create Workout of (the) Day (WOD)
 import argparse
 import csv
 import io
-from pprint import pprint
 import random
 import re
 from tabulate import tabulate
