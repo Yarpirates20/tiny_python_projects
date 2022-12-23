@@ -11,6 +11,7 @@ import io
 from pprint import pprint
 import random
 import re
+from tabulate import tabulate
 
 
 # --------------------------------------------------
@@ -51,8 +52,9 @@ def get_args():
 
     if args.num < 1:
         parser.error(f'--num "{args.num}" must be greater than 0')
-        
+
     return args
+
 
 # --------------------------------------------------
 def main():
@@ -61,7 +63,21 @@ def main():
     args = get_args()
     random.seed(args.seed)
     exercises = read_csv(args.file)
-    pprint(random.sample(exercises, k=args.num))
+    wod = random.sample(exercises, k=args.num)
+    # print(wod) #debug 1
+    new_wod = []
+    for exercise in wod:
+        name = exercise[0]
+        chosen_reps = random.randint(exercise[1], exercise[2])
+        if args.easy:
+            chosen_reps = int(chosen_reps / 2)
+
+        new_wod.append((name, chosen_reps))
+        
+    print(tabulate(new_wod, headers=('Exercise', 'Reps'))) # debug 2
+
+    # random.sample(exercises, k=args.num)
+
 
 # --------------------------------------------------
 def read_csv(fh):
@@ -70,11 +86,11 @@ def read_csv(fh):
     reader = csv.DictReader(fh, delimiter=',')
     exercises = []
     for rec in reader:
-        name, reps = rec['name'], rec['reps']
+        name, reps = rec['exercise'], rec['reps']
         match = re.match(r'(\d+)-(\d+)', reps)
         low, high = int(match.group(1)), int(match.group(2))
         exercises.append((name, low, high))
-    
+
     return exercises
 
 
@@ -84,6 +100,7 @@ def test_read_csv():
 
     text = io.StringIO('exercise,reps\nBurpees,20-50\nSitups,40-100')
     assert read_csv(text) == [('Burpees', 20, 50), ('Situps', 40, 100)]
+
 
 # --------------------------------------------------
 if __name__ == '__main__':
