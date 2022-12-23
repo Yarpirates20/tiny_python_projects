@@ -10,6 +10,7 @@ import csv
 import io
 import random
 import re
+import sys
 from tabulate import tabulate
 
 
@@ -63,6 +64,13 @@ def main():
     random.seed(args.seed)
     exercises = read_csv(args.file)
 
+    if not exercises:
+        sys.exit(f'No usable data in --file "{args.file.name}"')
+
+    num_exercises = len(exercises)
+    if args.num > num_exercises:
+        sys.exit(f'--num "{args.num}" > exercises "{num_exercises}"')
+
     wod = []
     for exercise, low, high in random.sample(exercises, k=args.num):
         reps = random.randint(low, high)
@@ -95,12 +103,19 @@ def read_csv(fh):
     reader = csv.DictReader(fh, delimiter=',')
     exercises = []
     for rec in reader:
-        name, reps = rec['exercise'], rec['reps']
+        
+        # name, reps = rec['exercise'], rec['reps']
+        name, reps = rec.get('exercise'), rec.get('reps')
+        
         ### MY ORIGINAL SOLUTION ####
         # match = re.match(r'(\d+)-(\d+)', reps)
         # low, high = int(match.group(1)), int(match.group(2))
-        low, high = map(int, reps.split('-'))
-        exercises.append((name, low, high))
+        if name and reps:
+            # low, high = map(int, reps.split('-'))
+            match = re.match(r'(\d+)-(\d+)', reps)
+            if match:
+                low, high = map(int, match.groups())
+                exercises.append((name, low, high))
 
     return exercises
 
