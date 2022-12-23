@@ -62,18 +62,28 @@ def main():
     args = get_args()
     random.seed(args.seed)
     exercises = read_csv(args.file)
-    wod = random.sample(exercises, k=args.num)
-    # print(wod) #debug 1
-    new_wod = []
-    for exercise in wod:
-        name = exercise[0]
-        chosen_reps = random.randint(exercise[1], exercise[2])
-        if args.easy:
-            chosen_reps = int(chosen_reps / 2)
 
-        new_wod.append((name, chosen_reps))
+    wod = []
+    for exercise, low, high in random.sample(exercises, k=args.num):
+        reps = random.randint(low, high)
+        if args.easy:
+            reps = int(reps / 2)
+        wod.append((exercise, reps))
+
+    print(tabulate(wod, headers=('Exercise', 'Reps')))
+
+    ##### MY ORIGINAL SOLUTION ######
+    # wod = random.sample(exercises, k=args.num)
+    # new_wod = []
+    # for exercise in wod:
+    #     name = exercise[0]
+    #     chosen_reps = random.randint(exercise[1], exercise[2])
+    #     if args.easy:
+    #         chosen_reps = int(chosen_reps / 2)
+
+    #     new_wod.append((name, chosen_reps))
         
-    print(tabulate(new_wod, headers=('Exercise', 'Reps'))) # debug 2
+    # print(tabulate(new_wod, headers=('Exercise', 'Reps'))) 
 
     # random.sample(exercises, k=args.num)
 
@@ -86,8 +96,10 @@ def read_csv(fh):
     exercises = []
     for rec in reader:
         name, reps = rec['exercise'], rec['reps']
-        match = re.match(r'(\d+)-(\d+)', reps)
-        low, high = int(match.group(1)), int(match.group(2))
+        ### MY ORIGINAL SOLUTION ####
+        # match = re.match(r'(\d+)-(\d+)', reps)
+        # low, high = int(match.group(1)), int(match.group(2))
+        low, high = map(int, reps.split('-'))
         exercises.append((name, low, high))
 
     return exercises
