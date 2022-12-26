@@ -6,6 +6,8 @@ Purpose: Generate random password from input file
 """
 
 import argparse
+import random
+import re
 
 
 # --------------------------------------------------
@@ -16,34 +18,50 @@ def get_args():
         description='Generate random password from input file',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('positional',
-                        metavar='str',
-                        help='A positional argument')
-
-    parser.add_argument('-a',
-                        '--arg',
-                        help='A named string argument',
-                        metavar='str',
-                        type=str,
-                        default='')
-
-    parser.add_argument('-i',
-                        '--int',
-                        help='A named integer argument',
-                        metavar='int',
-                        type=int,
-                        default=0)
-
-    parser.add_argument('-f',
-                        '--file',
-                        help='A readable file',
+    parser.add_argument('file',
+                        help='Input file(s)',
                         metavar='FILE',
-                        type=argparse.FileType('rt'),
+                        nargs='+',
+                        type=argparse.FileType('rt'))
+
+    parser.add_argument('-n',
+                        '--num',
+                        help='Number of passwords to generate',
+                        metavar='num',
+                        type=int,
+                        default=3)
+
+    parser.add_argument('-w',
+                        '--num_words',
+                        help='Number of words per password',
+                        metavar='word',
+                        type=int,
+                        default=4)
+
+    parser.add_argument('-m',
+                        '--min_word_len',
+                        help='Minimum length of word',
+                        metavar='min',
+                        type=int,
+                        default=3)
+    
+    parser.add_argument('-x',
+                        '--max_word_len',
+                        help='Maximum length of word',
+                        metavar='max',
+                        type=int,
+                        default=6)
+    
+    parser.add_argument('-s',
+                        '--seed',
+                        help='Seed for random',
+                        metavar='seed',
+                        type=int,
                         default=None)
 
-    parser.add_argument('-o',
-                        '--on',
-                        help='A boolean flag',
+    parser.add_argument('-l',
+                        '--l33t',
+                        help='Obfuscate the password',
                         action='store_true')
 
     return parser.parse_args()
@@ -54,17 +72,31 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
+    random.seed(args.seed)
+    words = {}
 
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ''))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
+    for fh in args.file:
+        for line in fh:
+            for word in map(clean, line.lower().split()):
+                words[word] = 1
+
+    print(words)
+
+
+# --------------------------------------------------
+def clean(word):
+    """Remove non-letters from words"""
+
+    sub = re.sub(r"[^\w]", '', word)
+    return sub
+
+# --------------------------------------------------
+def test_clean():
+    """Test clean() function"""
+    assert clean('') == ''
+    assert clean('states') == 'states'
+    assert clean("Don't") == 'Dont'
+
 
 
 # --------------------------------------------------
