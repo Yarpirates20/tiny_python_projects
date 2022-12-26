@@ -73,12 +73,15 @@ def main():
 
     args = get_args()
     random.seed(args.seed)
-    words = {}
+    words = set()
+
+    def word_len(word):
+        return args.min_word_len <= len(word) <= args.max_word_len
 
     for fh in args.file:
         for line in fh:
-            for word in map(clean, line.lower().split()):
-                words[word] = 1
+            for word in filter(word_len, map(clean, line.lower().split())):
+                words.add(word.title())
 
     print(words)
 
@@ -87,7 +90,7 @@ def main():
 def clean(word):
     """Remove non-letters from words"""
 
-    sub = re.sub(r"[^\w]", '', word)
+    sub = re.sub(r"[^A-Za-z]", '', word)
     return sub
 
 # --------------------------------------------------
