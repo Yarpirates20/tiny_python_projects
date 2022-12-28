@@ -8,6 +8,7 @@ Purpose: Generate random password from input file
 import argparse
 import random
 import re
+import string
 
 
 # --------------------------------------------------
@@ -83,7 +84,8 @@ def main():
             for word in filter(word_len, map(clean, line.lower().split())):
                 words.add(word.title())
 
-    print(words)
+    words = sorted(words)
+    print(''.join(random.sample(words, k=args.num_words)))
 
 
 # --------------------------------------------------
@@ -93,13 +95,31 @@ def clean(word):
     sub = re.sub(r"[^A-Za-z]", '', word)
     return sub
 
-# --------------------------------------------------
-def test_clean():
-    """Test clean() function"""
-    assert clean('') == ''
-    assert clean('states') == 'states'
-    assert clean("Don't") == 'Dont'
 
+#--------------------------------------------------
+def ransom(word):
+    ransom_word = [x.upper() if random.choice([False, True]) else x.lower() for x in word]
+
+    return ''.join(ransom_word)
+
+
+# --------------------------------------------------
+def l33t(text):
+    
+    l33t_code = {
+        'a': '@',
+        'A': '4',
+        'O': '0',
+        't': '+',
+        'E': '3',
+        'I': '1',
+        'S': '5'
+    }
+
+    leet_speak = [l33t_code.get(char, char) for char in text]
+    # leet_speak.append(random.choice(string.punctuation))
+
+    return (''.join(ransom(leet_speak))) 
 
 
 # --------------------------------------------------
