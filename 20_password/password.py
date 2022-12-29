@@ -85,8 +85,15 @@ def main():
                 words.add(word.title())
 
     words = sorted(words)
-    print(''.join(random.sample(words, k=args.num_words)))
+    # for num in args.num:
+    passwords = [''.join(random.sample(words, k=args.num_words)) for _ in range(args.num)]
 
+    if args.l33t:
+        encoded = map(l33t, passwords)
+        print('\n'.join(encoded))
+    # print(''.join(random.sample(words, k=args.num)))
+    else:
+        print('\n'.join(passwords))
 
 # --------------------------------------------------
 def clean(word):
@@ -115,11 +122,24 @@ def l33t(text):
         'I': '1',
         'S': '5'
     }
+    # leet_speak = []
+    # for char in text:
+    #     ransom(char)
+    #     l33t_code.get(char, char)
+    #     leet_speak.append(char)
 
-    leet_speak = [l33t_code.get(char, char) for char in text]
     # leet_speak.append(random.choice(string.punctuation))
 
-    return (''.join(ransom(leet_speak))) 
+    # return ''.join(leet_speak)
+    ransomed_text = ransom(text)
+    leet_speak = [l33t_code.get(char, char) for char in ransomed_text]
+    leet_speak.append(random.choice(string.punctuation))
+
+    return ''.join(leet_speak)
+    # punctuation = random.choice(string.punctuation)
+    # leet_speak.append(punctuation)
+
+    # return (''.join(ransom(leet_speak))) 
 
 
 # --------------------------------------------------
